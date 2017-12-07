@@ -57,19 +57,23 @@ export class SiteWrapper {
         return this.name + (this.slotName ? `-${this.slotName}` : '');
     }
 
-    public async stop(client: WebSiteManagementClient): Promise<void> {
+    public async stop(client: WebSiteManagementClient): Promise<Site> {
         if (this.slotName) {
             await client.webApps.stopSlot(this.resourceGroup, this.name, this.slotName);
+            return await client.webApps.getSlot(this.resourceGroup, this.name, this.slotName);
         } else {
             await client.webApps.stop(this.resourceGroup, this.name);
+            return await client.webApps.get(this.resourceGroup, this.name);
         }
     }
 
-    public async start(client: WebSiteManagementClient): Promise<void> {
+    public async start(client: WebSiteManagementClient): Promise<Site> {
         if (this.slotName) {
             await client.webApps.startSlot(this.resourceGroup, this.name, this.slotName);
+            return await client.webApps.getSlot(this.resourceGroup, this.name, this.slotName);
         } else {
             await client.webApps.start(this.resourceGroup, this.name);
+            return await client.webApps.get(this.resourceGroup, this.name);
         }
     }
 
